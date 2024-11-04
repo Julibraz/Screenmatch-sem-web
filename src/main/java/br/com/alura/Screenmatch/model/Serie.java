@@ -1,6 +1,7 @@
 package br.com.alura.Screenmatch.model;
 
 import br.com.alura.Screenmatch.service.ConsultaChatGPT;
+import br.com.alura.Screenmatch.service.TraducaoMyMemory.ConsultaMyMemory;
 import com.fasterxml.jackson.annotation.JsonAlias;
 
 import java.util.OptionalDouble;
@@ -14,15 +15,34 @@ public class Serie {
     private String poster;
     private String sinopse;
 
-    public Serie(DadosSerie dadosSerie) {
+
+
+    //CONSTRUTOR PARA QUANDO FOR UTILIZAR A API DO MYMEMORY PARA TRADUZIR
+    public Serie(DadosSerie dadosSerie){
         this.titulo = dadosSerie.titulo();
         this.totalTemporadas = dadosSerie.totalTemporadas();
         this.avaliacao = OptionalDouble.of(Double.valueOf(dadosSerie.avaliacao())).orElse(0);
         this.genero = Categoria.fromString(dadosSerie.genero().split(",")[0].trim());
         this.atores = dadosSerie.atores();
         this.poster = dadosSerie.poster();
-        this.sinopse = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim();
+        this.sinopse = ConsultaMyMemory.obterTraducao(dadosSerie.sinopse()).trim();
     }
+
+
+
+
+
+    //CONSTRUTOR PARA QUANDO FOR UTILIZAR A API DO CHATGPT PARA TRADUZIR
+//    public Serie(DadosSerie dadosSerie) {
+//        this.titulo = dadosSerie.titulo();
+//        this.totalTemporadas = dadosSerie.totalTemporadas();
+//        this.avaliacao = OptionalDouble.of(Double.valueOf(dadosSerie.avaliacao())).orElse(0);
+//        this.genero = Categoria.fromString(dadosSerie.genero().split(",")[0].trim());
+//        this.atores = dadosSerie.atores();
+//        this.poster = dadosSerie.poster();
+//        this.sinopse = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim();
+//    }
+
 
     public String getTitulo() {
         return titulo;

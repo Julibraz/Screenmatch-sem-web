@@ -4,6 +4,7 @@ package br.com.alura.Screenmatch.service;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.service.OpenAiService;
 
+//Caso haja problemas com o ChatGPT, Utilize o outro meio de tradução com o MyMemory, O que implementarei para funcionar agora nessa Branch
 public class ConsultaChatGPT {
     public static String obterTraducao(String texto) {
         OpenAiService service = new OpenAiService("CHAVE API AQUI");

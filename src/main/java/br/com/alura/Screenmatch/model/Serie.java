@@ -17,7 +17,7 @@ public class Serie {
 
 
 
-    //CONSTRUTOR PARA QUANDO FOR UTILIZAR A API DO MYMEMORY PARA TRADUZIR
+//    //CONSTRUTOR PARA QUANDO FOR UTILIZAR A API DO MYMEMORY PARA TRADUZIR
     public Serie(DadosSerie dadosSerie){
         this.titulo = dadosSerie.titulo();
         this.totalTemporadas = dadosSerie.totalTemporadas();

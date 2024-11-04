@@ -8,13 +8,6 @@ import java.net.http.HttpResponse;
 
 public class ConsumoAPI {
 
-
-
-
-
-
-
-
     //devolve uma String com o json que corresponde a resposta da requisição
     public String obterDados(String endereco){
         //criação do cliente http

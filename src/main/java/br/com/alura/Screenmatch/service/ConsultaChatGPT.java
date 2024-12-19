@@ -7,7 +7,7 @@ import com.theokanning.openai.service.OpenAiService;
 //Caso haja problemas com o ChatGPT, Utilize o outro meio de tradução com o MyMemory, O que implementarei para funcionar agora nessa Branch
 public class ConsultaChatGPT {
     public static String obterTraducao(String texto) {
-        OpenAiService service = new OpenAiService("CHAVE API AQUI");
+        OpenAiService service = new OpenAiService(System.getenv("OPENAI_APIKEY")); //Informando a API por meio de variavel de ambiente
 
         CompletionRequest requisicao = CompletionRequest.builder()
                 .model("gpt-3.5-turbo")

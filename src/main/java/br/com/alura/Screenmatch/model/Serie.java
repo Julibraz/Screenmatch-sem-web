@@ -3,18 +3,33 @@ package br.com.alura.Screenmatch.model;
 import br.com.alura.Screenmatch.service.ConsultaChatGPT;
 import br.com.alura.Screenmatch.service.TraducaoMyMemory.ConsultaMyMemory;
 import com.fasterxml.jackson.annotation.JsonAlias;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.OptionalDouble;
 
+@Entity
+@Table(name = "series")
 public class Serie {
+    @Id //define o campo como chave primária
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //gera o valor da chave primária automaticamente
+    private Long id;
+    @Column(unique = true) //define o campo como unico
     private String titulo;
     private Integer totalTemporadas;
     private Double avaliacao;
+    @Enumerated(EnumType.STRING)
     private Categoria genero;
     private String atores;
     private String poster;
     private String sinopse;
+    @Transient //define o campo como transiente, que o Hibernate não vai persistir no BD
+    private List<Episodio> episodios = new ArrayList<>();
 
+
+
+    public Serie() {}
 
 
     //CONSTRUTOR PARA QUANDO FOR UTILIZAR A API DO MYMEMORY PARA TRADUZIR
@@ -26,13 +41,14 @@ public class Serie {
         this.atores = dadosSerie.atores();
         this.poster = dadosSerie.poster();
         this.sinopse = ConsultaMyMemory.obterTraducao(dadosSerie.sinopse()).trim();
+                     //consultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim(); //para utilizar a API do ChatGPT para traduções
     }
 
 
 
 
 
-    //CONSTRUTOR PARA QUANDO FOR UTILIZAR A API DO CHATGPT PARA TRADUZIR
+    //CONSTRUTOR PARA QUANDO FOR UTILIZAR A API DO CHATGPT PARA A TRADUÇÃO
 //    public Serie(DadosSerie dadosSerie) {
 //        this.titulo = dadosSerie.titulo();
 //        this.totalTemporadas = dadosSerie.totalTemporadas();
@@ -43,6 +59,14 @@ public class Serie {
 //        this.sinopse = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim();
 //    }
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitulo() {
         return titulo;
@@ -98,6 +122,14 @@ public class Serie {
 
     public void setSinopse(String sinopse) {
         this.sinopse = sinopse;
+    }
+
+    public List<Episodio> getEpisodios() {
+        return episodios;
+    }
+
+    public void setEpisodios(List<Episodio> episodios) {
+        this.episodios = episodios;
     }
 
     @Override

@@ -1,8 +1,10 @@
 package br.com.alura.Screenmatch.principal;
 
 import br.com.alura.Screenmatch.model.*;
+import br.com.alura.Screenmatch.repository.SerieRepository;
 import br.com.alura.Screenmatch.service.ConsumoAPI;
 import br.com.alura.Screenmatch.service.ConverteDados;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,9 +17,16 @@ public class Principal {
     private ConverteDados conversor = new ConverteDados();
 
     private final String ENDERECO = "http://www.omdbapi.com/?t=";
-    private final String API_KEY = "Chave API AQUI";
+    private final String API_KEY = System.getenv("OMDB_APIKEY"); //chamando chave da api do omdb por variavel de ambiente
 
     private List<DadosSerie> dadosSeries = new ArrayList<>();
+
+    //o @Autowired que serve para injeção de dependência, esta no ScreenmatchApplication
+    private SerieRepository repositorio; //criando um repositorio para salvar as séries
+
+    public Principal(SerieRepository repositorio) {
+        this.repositorio = repositorio;
+    }
 
     public void exibeMenu(){
 
@@ -56,7 +65,9 @@ public class Principal {
 
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
-        dadosSeries.add(dados);
+        //dadosSeries.add(dados); //adiciona na lista, para quando não estiver utilizando o banco de dados
+        Serie serie = new Serie(dados);
+        repositorio.save(serie); //salva no banco
         System.out.println(dados);
     }
 
@@ -82,9 +93,7 @@ public class Principal {
 
 
     private void listarSeriesBuscadas(){
-        List<Serie> series = new ArrayList<>();
-        series = dadosSeries.stream().map(d -> new Serie(d))
-                        .collect(Collectors.toList());
+        List<Serie> series = repositorio.findAll();
         series.stream().sorted(Comparator.comparing(Serie::getGenero))
                 .forEach(System.out::println);
     }
